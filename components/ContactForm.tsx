@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { siteConfig } from '@/config/site.config';
 
-const CONTACT_EMAIL = 'amit.kumar_84@ymail.com';
+const CONTACT_EMAIL = siteConfig.personal.email;
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });

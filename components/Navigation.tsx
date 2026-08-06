@@ -4,15 +4,12 @@ import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { siteConfig } from '@/config/site.config';
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const links = [
-    { href: '/about', label: 'About' },
-    { href: '/projects', label: 'Projects & Case Studies' },
-    { href: '/contact', label: 'Contact' },
-  ];
+  const links = siteConfig.navigation.links;
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm">
@@ -20,10 +17,10 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform">
-              <span className="text-white font-bold text-sm md:text-base">YN</span>
+              <span className="text-white font-bold text-sm md:text-base">{siteConfig.personal.initials}</span>
             </div>
             <span className="font-bold text-lg md:text-xl bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400 bg-clip-text text-transparent hidden sm:inline">
-              YOUR_FULL_NAME
+              {siteConfig.personal.fullName}
             </span>
           </Link>
 

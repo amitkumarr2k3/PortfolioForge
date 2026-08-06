@@ -1,15 +1,38 @@
 import { Metadata } from 'next';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { siteConfig } from '@/config/site.config';
 
-// TODO: Replace all placeholder values below with your actual project details
+interface ProjectPageProps {
+  params: Promise<{ slug: string }>;
+}
 
-export const metadata: Metadata = {
-  title: 'Project Two - YOUR_FULL_NAME',        // TODO
-  description: 'A short description of Project Two.',  // TODO
-};
+// Pre-renders a static page for every project defined in the config.
+export function generateStaticParams() {
+  return siteConfig.projects.map((project) => ({ slug: project.slug }));
+}
 
-export default function ProjectTwoPage() {
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = siteConfig.projects.find((p) => p.slug === slug);
+  if (!project) return {};
+  return {
+    title: `${project.title} - ${siteConfig.personal.fullName}`,
+    description: project.description,
+  };
+}
+
+export default async function ProjectDetailPage({ params }: ProjectPageProps) {
+  const { slug } = await params;
+  const project = siteConfig.projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    notFound();
+  }
+
+  const { detail } = project;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-slate-950 dark:via-slate-900/30 dark:to-slate-950">
 
@@ -28,28 +51,25 @@ export default function ProjectTwoPage() {
         <div className="max-w-[min(160rem,94vw)] mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
           <div className="space-y-4">
             <div className="space-y-3">
-              {/* TODO: Change badge text, e.g. "Production", "Open Source", "Side Project" */}
-              <span className="inline-block px-3 py-1 text-xs font-semibold bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 rounded-full border border-violet-200 dark:border-violet-800">
-                Production System
+              <span className="inline-block px-3 py-1 text-xs font-semibold bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full border border-green-200 dark:border-green-800">
+                {detail.badge}
               </span>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
-                Project Two {/* TODO: Replace with your project name */}
+                {project.title}
               </h1>
               <p className="text-xl text-slate-600 dark:text-slate-400">
-                Full Title / Subtitle of Project Two {/* TODO */}
+                {project.fullTitle}
               </p>
             </div>
             <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
-              {/* TODO: 2-3 sentences overview of this project */}
-              A brief overview of Project Two. Describe the problem you were solving, the approach
-              you took, and who the users or stakeholders are.
+              {detail.heroDescription}
             </p>
           </div>
 
-          {/* TODO: Add screenshot at /public/projects/project-two.png */}
-          <div className="hidden lg:block relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl aspect-[4/3] bg-slate-100 dark:bg-slate-800">
-            <div className="absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-600 text-sm p-4 text-center">
-              Add your project screenshot to /public/projects/project-two.png
+          {/* TODO: Add a screenshot at /public + set `image` in config/site.config.ts, then replace this block with an <Image> component */}
+          <div className="hidden lg:block relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl aspect-[4/3] bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-600 text-sm px-6 text-center">
+              Add your project screenshot to {project.image}
             </div>
           </div>
         </div>
@@ -60,22 +80,13 @@ export default function ProjectTwoPage() {
         <div className="max-w-[min(160rem,94vw)] mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6">Key Metrics</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            {/* TODO: Replace each metric with real measurable outcomes */}
-            <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-2 bg-white dark:bg-slate-800">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">X%</div>
-              <div className="text-sm font-medium text-slate-600 dark:text-slate-400">KEY_METRIC_1</div>
-              <p className="text-xs text-slate-500 dark:text-slate-500">Brief context for this metric.</p>
-            </div>
-            <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-2 bg-white dark:bg-slate-800">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">X+</div>
-              <div className="text-sm font-medium text-slate-600 dark:text-slate-400">KEY_METRIC_2</div>
-              <p className="text-xs text-slate-500 dark:text-slate-500">Brief context for this metric.</p>
-            </div>
-            <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-2 bg-white dark:bg-slate-800">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">X</div>
-              <div className="text-sm font-medium text-slate-600 dark:text-slate-400">KEY_METRIC_3</div>
-              <p className="text-xs text-slate-500 dark:text-slate-500">Brief context for this metric.</p>
-            </div>
+            {detail.keyMetrics.map((metric, idx) => (
+              <div key={idx} className="rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-2 bg-white dark:bg-slate-800">
+                <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">{metric.value}</div>
+                <div className="text-sm font-medium text-slate-600 dark:text-slate-400">{metric.label}</div>
+                <p className="text-xs text-slate-500 dark:text-slate-500">{metric.context}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -86,17 +97,13 @@ export default function ProjectTwoPage() {
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">The Problem</h2>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              {/* TODO: What challenge did this project address? */}
-              Describe the core problem this project solved. What was the status quo?
-              What pain points existed for users or the business?
+              {detail.problem}
             </p>
           </div>
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">The Solution</h2>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              {/* TODO: Describe your solution and why it was the right approach */}
-              Describe what you built and how it solved the problem. What were the key design
-              decisions? What made your approach effective?
+              {detail.solution}
             </p>
           </div>
         </div>
@@ -107,11 +114,7 @@ export default function ProjectTwoPage() {
         <div className="max-w-[min(160rem,94vw)] mx-auto space-y-6">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Technology Stack</h2>
           <div className="space-y-4">
-            {[
-              { layer: 'Frontend',       items: ['Tech1', 'Tech2', 'Tech3'] },  // TODO
-              { layer: 'Backend',        items: ['Tech1', 'Tech2', 'Tech3'] },  // TODO
-              { layer: 'Infrastructure', items: ['Tech1', 'Tech2', 'Tech3'] },  // TODO
-            ].map((stack) => (
+            {detail.techStack.map((stack) => (
               <div key={stack.layer} className="space-y-2">
                 <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">{stack.layer}</h3>
                 <div className="flex flex-wrap gap-2">
@@ -127,22 +130,38 @@ export default function ProjectTwoPage() {
         </div>
       </section>
 
-      {/* Impact */}
+      {/* Key Features */}
+      <section className="py-10 md:py-12 px-4">
+        <div className="max-w-[min(160rem,94vw)] mx-auto space-y-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">Key Features</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {detail.features.map((feature) => (
+              <div key={feature.title} className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 space-y-2">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{feature.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Impact & Results */}
       <section className="py-10 md:py-12 px-4 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 text-white">
         <div className="max-w-[min(160rem,94vw)] mx-auto space-y-6">
           <h2 className="text-2xl md:text-3xl font-bold">Impact & Results</h2>
           <p className="text-slate-300 leading-relaxed max-w-3xl">
-            {/* TODO: Measurable business outcomes, user adoption, performance, savings, lessons learned */}
-            Describe the measurable impact this project had. Include business outcomes, user adoption,
-            performance improvements, or other relevant results.
+            {detail.impactResults}
           </p>
         </div>
       </section>
 
-      {/* Back */}
+      {/* Back to Projects */}
       <section className="py-10 px-4">
         <div className="max-w-[min(160rem,94vw)] mx-auto">
-          <Link href="/projects" className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
+          >
             <ArrowLeft className="w-4 h-4" />
             View All Projects
           </Link>

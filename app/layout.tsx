@@ -2,12 +2,12 @@ import { ReactNode } from 'react'
 import { Navigation } from '@/components/Navigation'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import type { Metadata } from "next";
+import { siteConfig } from '@/config/site.config';
 import './globals.css'
 
 export const metadata: Metadata = {
-  // TODO: Replace with your name and description
-  title: "YOUR_NAME Portfolio",
-  description: "YOUR_PROFESSIONAL_TITLE",
+  title: siteConfig.seo.siteTitle,
+  description: siteConfig.seo.siteDescription,
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <div className="grid md:grid-cols-3 gap-8 mb-8">
                 <div className="space-y-2">
                   <h3 className="font-semibold text-slate-900 dark:text-white">About</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">YOUR_PROFESSIONAL_TITLE building innovative solutions</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{siteConfig.footer.aboutText}</p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-semibold text-slate-900 dark:text-white">Projects & Case Studies</h3>
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </div>
               <div className="border-t border-slate-200 dark:border-slate-800 pt-8">
                 <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-                  © 2026 YOUR_NAME. Built with Next.js and Tailwind CSS.
+                  © {new Date().getFullYear()} {siteConfig.personal.fullName}. Built with Next.js and Tailwind CSS.
                 </p>
               </div>
             </div>

@@ -6,46 +6,38 @@ import {
   ArrowRight,
   CheckCircle2,
 } from 'lucide-react';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  // TODO: Replace with your name and description
-  title: 'Contact - YOUR_FULL_NAME',
+  title: `Contact - ${siteConfig.personal.fullName}`,
   description: 'Get in touch to discuss your next project or collaboration.',
 };
 
 export default function ContactPage() {
+  const { personal, contact } = siteConfig;
+
   const contactMethods = [
     {
       icon: Mail,
       title: 'Email',
       description: 'Send me a direct message',
       action: 'Contact Me',
-      href: 'mailto:your.email@example.com', // TODO: Replace with your email address
+      href: `mailto:${personal.email}`,
     },
     {
       icon: Linkedin,
       title: 'LinkedIn',
       description: 'Connect professionally',
       action: 'Visit Profile',
-      href: 'https://linkedin.com/in/your-linkedin-username', // TODO: Replace with your LinkedIn profile URL
+      href: personal.linkedinUrl,
     },
     {
       icon: Github,
       title: 'GitHub',
       description: 'Explore my projects',
       action: 'View Repositories',
-      href: 'https://github.com/your-github-username', // TODO: Replace with your GitHub profile URL
+      href: personal.githubUrl,
     },
-  ];
-
-  // TODO: Replace these with your own areas of expertise
-  const expertise = [
-    'YOUR_EXPERTISE_1', // e.g. 'Software Architecture'
-    'YOUR_EXPERTISE_2', // e.g. 'Cloud & DevOps'
-    'YOUR_EXPERTISE_3', // e.g. 'Full-Stack Development'
-    'YOUR_EXPERTISE_4', // e.g. 'API Design'
-    'YOUR_EXPERTISE_5', // e.g. 'Team Leadership'
-    'YOUR_EXPERTISE_6', // e.g. 'Agile & Product Management'
   ];
 
   return (
@@ -58,7 +50,7 @@ export default function ContactPage() {
           </h1>
 
           <p className="text-base text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            YOUR_CONTACT_INTRO {/* TODO: e.g. "Looking to discuss software development, consulting, or collaboration opportunities?" */}
+            {contact.intro}
           </p>
         </div>
       </section>
@@ -114,13 +106,11 @@ export default function ContactPage() {
               </h2>
 
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-                I help organizations transform ideas into successful products by
-                combining Product Strategy, Agentic AI, Generative AI,
-                Industrial AI, IoT, and Enterprise Software expertise.
+                {contact.howICanHelp}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-3">
-                {expertise.map((item, idx) => (
+                {contact.expertise.map((item, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-slate-700 dark:text-slate-300">
@@ -132,9 +122,7 @@ export default function ContactPage() {
 
               <div className="mt-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 p-3">
                 <p className="text-xs text-slate-600 dark:text-slate-300">
-                  Open to discussions on Product Management, Agentic AI,
-                  GenAI, Industrial AI, Product Discovery, Product Strategy,
-                  and Enterprise Digital Transformation.
+                  {contact.footerNote}
                 </p>
               </div>
             </div>

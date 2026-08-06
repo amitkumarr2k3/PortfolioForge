@@ -1,8 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Code2, Zap, Globe, Sparkles, CheckCircle2, Server } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Icon } from '@/lib/icons';
+import { siteConfig } from '@/config/site.config';
 
 export default function Home() {
+  const { home, projects } = siteConfig;
+  const featuredProjects = projects.filter((p) => p.featured);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-950">
       {/* Hero Section */}
@@ -10,21 +15,21 @@ export default function Home() {
         <div className="max-w-[min(160rem,94vw)] mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100/80 dark:bg-blue-900/30 border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">YOUR_HERO_TAGLINE {/* e.g. "Building the future with AI" */}</span>
+              <Icon name="Sparkles" className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{home.heroTagline}</span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-600 dark:from-blue-400 dark:via-violet-400 dark:to-indigo-400 bg-clip-text text-transparent leading-tight">
-                YOUR_FULL_NAME {/* TODO: Replace with your full name */}
+                {siteConfig.personal.fullName}
               </h1>
               <p className="text-lg md:text-xl font-semibold text-slate-700 dark:text-slate-300 leading-snug">
-                YOUR_TITLE_1 • YOUR_TITLE_2 • YOUR_TITLE_3 {/* TODO: e.g. "AI Engineer • Product Builder • Open Source Contributor" */}
+                {home.heroTitles.join(' • ')}
               </p>
             </div>
 
             <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
-              YOUR_SHORT_BIO {/* TODO: A 1-2 sentence professional bio. e.g. "Building enterprise-grade software with X years of expertise in Y and Z." */}
+              {home.heroShortBio}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -58,12 +63,7 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: 'X+', detail: 'Years experience' },       // TODO: Replace X
-                  { label: 'X+', detail: 'Projects delivered' },     // TODO: Replace X
-                  { label: 'X+', detail: 'Clients served' },         // TODO: Replace X
-                  { label: 'X',  detail: 'Key systems built' },      // TODO: Replace X
-                ].map((stat) => (
+                {home.heroStats.map((stat) => (
                   <div
                     key={`${stat.label}-${stat.detail}`}
                     className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
@@ -76,11 +76,7 @@ export default function Home() {
               </div>
 
               <div className="space-y-3 pt-2">
-                {[
-                  'YOUR_SKILL_1', // TODO: e.g. "Agentic AI & LLM orchestration"
-                  'YOUR_SKILL_2', // TODO: e.g. "Enterprise-grade architecture"
-                  'YOUR_SKILL_3', // TODO: e.g. "Full-stack product delivery"
-                ].map((item) => (
+                {home.heroSkills.map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300 font-medium">{item}</span>
@@ -101,98 +97,54 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Project One',                          // TODO: Replace with your project name
-                subtitle: 'Short Project Subtitle',           // TODO: Replace with a subtitle
-                image: '/projects/project-one.png',           // TODO: Add your project image to /public/projects/
-                description: 'A brief description of what this project does and the problem it solves.',  // TODO: Replace
-                href: '/projects/project-one',
-                icon: Code2,
-                gradient: 'from-blue-500 to-cyan-500',
-                tags: ['Tag1', 'Tag2', 'Tag3'],               // TODO: Replace with relevant tags
-              },
-              {
-                title: 'Project Two',                         // TODO: Replace with your project name
-                subtitle: 'Short Project Subtitle',           // TODO: Replace with a subtitle
-                image: '/projects/project-two.png',           // TODO: Add your project image to /public/projects/
-                description: 'A brief description of what this project does and the problem it solves.',  // TODO: Replace
-                href: '/projects/project-two',
-                icon: Zap,
-                gradient: 'from-violet-500 to-purple-500',
-                tags: ['Tag1', 'Tag2', 'Tag3'],               // TODO: Replace with relevant tags
-              },
-              {
-                title: 'Project Three',                       // TODO: Replace with your project name
-                subtitle: 'Short Project Subtitle',           // TODO: Replace with a subtitle
-                image: '/projects/project-three.png',         // TODO: Add your project image to /public/projects/
-                description: 'A brief description of what this project does and the problem it solves.',  // TODO: Replace
-                href: '/projects/project-three',
-                icon: Globe,
-                gradient: 'from-amber-500 to-orange-500',
-                tags: ['Tag1', 'Tag2', 'Tag3'],               // TODO: Replace with relevant tags
-              },
-              {
-                title: 'Project Four',                        // TODO: Replace with your project name (or remove this entry)
-                subtitle: 'Short Project Subtitle',           // TODO: Replace with a subtitle
-                image: '/projects/project-four.png',          // TODO: Add your project image to /public/projects/
-                description: 'A brief description of what this project does and the problem it solves.',  // TODO: Replace
-                href: '/projects/project-four',
-                icon: Server,
-                gradient: 'from-emerald-500 to-teal-500',
-                tags: ['Tag1', 'Tag2', 'Tag3'],               // TODO: Replace with relevant tags
-              },
-            ].map((project) => {
-              const Icon = project.icon;
-              return (
-                <Link
-                  key={project.title}
-                  href={project.href}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all hover:shadow-lg hover:-translate-y-1 bg-white dark:bg-slate-900/50 backdrop-blur-sm"
-                >
-                  <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
+            {featuredProjects.map((project) => (
+              <Link
+                key={project.slug}
+                href={`/projects/${project.slug}`}
+                className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all hover:shadow-lg hover:-translate-y-1 bg-white dark:bg-slate-900/50 backdrop-blur-sm"
+              >
+                <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
 
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent dark:from-slate-800/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent dark:from-slate-800/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-                  <div className="relative p-8 space-y-4">
-                    <div className={`w-12 h-12 -mt-16 rounded-xl bg-gradient-to-br ${project.gradient} p-0.5 shadow-lg`}>
-                      <div className="w-full h-full bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center">
-                        <Icon className={`w-6 h-6 bg-gradient-to-br ${project.gradient} bg-clip-text text-transparent`} />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{project.title}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">{project.subtitle}</p>
-                    </div>
-
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 pt-4">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold pt-2 group-hover:translate-x-2 transition-transform">
-                      Learn more <ArrowRight className="w-4 h-4" />
+                <div className="relative p-8 space-y-4">
+                  <div className={`w-12 h-12 -mt-16 rounded-xl bg-gradient-to-br ${project.gradient} p-0.5 shadow-lg`}>
+                    <div className="w-full h-full bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center">
+                      <Icon name={project.icon} className={`w-6 h-6 bg-gradient-to-br ${project.gradient} bg-clip-text text-transparent`} />
                     </div>
                   </div>
-                </Link>
-              );
-            })}
+
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{project.title}</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">{project.subtitle}</p>
+                  </div>
+
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 pt-4">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold pt-2 group-hover:translate-x-2 transition-transform">
+                    Learn more <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -206,12 +158,7 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { label: 'X+ years', detail: 'YOUR_EXPERTISE_AREA_1' },    // TODO: e.g. "Building enterprise software"
-              { label: 'YOUR_STRENGTH_1', detail: 'YOUR_STRENGTH_1_DESC' }, // TODO: e.g. "AI & ML Expert", "Copilots, agents, embeddings"
-              { label: 'YOUR_STRENGTH_2', detail: 'YOUR_STRENGTH_2_DESC' }, // TODO
-              { label: 'YOUR_STRENGTH_3', detail: 'YOUR_STRENGTH_3_DESC' }, // TODO
-            ].map((item) => (
+            {home.whyWorkTogether.map((item) => (
               <div key={item.label} className="flex items-start gap-4">
                 <CheckCircle2 className="w-6 h-6 text-blue-400 flex-shrink-0 mt-1" />
                 <div>

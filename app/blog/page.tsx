@@ -1,35 +1,13 @@
 import { Metadata } from 'next';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  // TODO: Replace with your name
-  title: 'Blog - YOUR_FULL_NAME',
+  title: `Blog - ${siteConfig.personal.fullName}`,
   description: 'Articles and thoughts on your areas of expertise.',
 };
 
 export default function BlogPage() {
-  const posts = [
-    {
-      title: 'The Future of Agentic AI in Enterprise',
-      excerpt: 'Exploring how agentic AI systems are transforming enterprise software and automation.',
-      date: '2024-01-15',
-      category: 'AI',
-      slug: 'agentic-ai-future',
-    },
-    {
-      title: 'Building Scalable AI Products',
-      excerpt: 'Best practices for designing and scaling AI-powered applications.',
-      date: '2024-01-10',
-      category: 'Product',
-      slug: 'building-scalable-ai',
-    },
-    {
-      title: 'MCP Integration Patterns',
-      excerpt: 'Deep dive into Model Context Protocol and integration strategies.',
-      date: '2024-01-05',
-      category: 'Technical',
-      slug: 'mcp-integration-patterns',
-    },
-  ];
+  const posts = siteConfig.blog.posts;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-slate-950 dark:via-slate-900/30 dark:to-slate-950">
@@ -74,7 +52,9 @@ export default function BlogPage() {
                       })}
                     </time>
                     <a
-                      href={`/blog/${post.slug}`}
+                      href={post.externalUrl ?? `/blog/${post.slug}`}
+                      target={post.externalUrl ? '_blank' : undefined}
+                      rel={post.externalUrl ? 'noopener noreferrer' : undefined}
                       className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-sm"
                     >
                       Read More →

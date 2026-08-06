@@ -1,14 +1,16 @@
 import { Metadata } from 'next';
 import { ArrowRight, Server, Brain, Zap, Clock, Users, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { siteConfig } from '@/config/site.config';
 
 export const metadata: Metadata = {
-  // TODO: Replace with your name
-  title: 'Projects - YOUR_FULL_NAME',
+  title: `Projects - ${siteConfig.personal.fullName}`,
   description: 'Detailed case studies and portfolio projects.',
 };
 
 export default function ProjectsPage() {
+  const { projects, services } = siteConfig;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/20 to-white dark:from-slate-950 dark:via-slate-900/30 dark:to-slate-950">
       {/* Header */}
@@ -32,53 +34,10 @@ export default function ProjectsPage() {
           </div>
 
           <div className="space-y-8">
-            {[
-              {
-                title: 'Project One',                       // TODO: Replace with your project name
-                fullTitle: 'Full Title of Project One',    // TODO: Replace with full descriptive title
-                description: 'A detailed description of what this project does, the problem it solves, and the approach taken. Include technical depth and business context.',  // TODO
-                href: '/projects/project-one',
-                status: 'Production',                      // TODO: e.g. "Production", "Open Source", "Prototype"
-                metrics: [
-                  { label: 'KEY_METRIC_1_LABEL', value: 'VALUE' }, // TODO: e.g. { label: 'Performance Gain', value: '40%' }
-                  { label: 'KEY_METRIC_2_LABEL', value: 'VALUE' }, // TODO
-                  { label: 'KEY_METRIC_3_LABEL', value: 'VALUE' }, // TODO
-                ],
-                technologies: ['Tech1', 'Tech2', 'Tech3', 'Tech4'], // TODO: Replace with your stack
-                impact: 'Describe the measurable impact and business value delivered by this project.', // TODO
-              },
-              {
-                title: 'Project Two',                      // TODO
-                fullTitle: 'Full Title of Project Two',    // TODO
-                description: 'A detailed description of what this project does, the problem it solves, and the approach taken.',  // TODO
-                href: '/projects/project-two',
-                status: 'Production',                      // TODO
-                metrics: [
-                  { label: 'KEY_METRIC_1_LABEL', value: 'VALUE' }, // TODO
-                  { label: 'KEY_METRIC_2_LABEL', value: 'VALUE' }, // TODO
-                  { label: 'KEY_METRIC_3_LABEL', value: 'VALUE' }, // TODO
-                ],
-                technologies: ['Tech1', 'Tech2', 'Tech3'], // TODO
-                impact: 'Describe the measurable impact of this project.', // TODO
-              },
-              {
-                title: 'Project Three',                    // TODO
-                fullTitle: 'Full Title of Project Three',  // TODO
-                description: 'A detailed description of what this project does, the problem it solves, and the approach taken.',  // TODO
-                href: '/projects/project-three',
-                status: 'Production',                      // TODO
-                metrics: [
-                  { label: 'KEY_METRIC_1_LABEL', value: 'VALUE' }, // TODO
-                  { label: 'KEY_METRIC_2_LABEL', value: 'VALUE' }, // TODO
-                  { label: 'KEY_METRIC_3_LABEL', value: 'VALUE' }, // TODO
-                ],
-                technologies: ['Tech1', 'Tech2', 'Tech3'], // TODO
-                impact: 'Describe the measurable impact of this project.', // TODO
-              },
-            ].map((project) => (
+            {projects.map((project) => (
               <Link
-                key={project.title}
-                href={project.href}
+                key={project.slug}
+                href={`/projects/${project.slug}`}
                 className="group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-xl hover:-translate-y-1 bg-white dark:bg-slate-900/50 backdrop-blur-sm"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-400/5 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -147,15 +106,15 @@ export default function ProjectsPage() {
         <div className="max-w-[min(160rem,94vw)] mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { icon: TrendingUp, label: 'Projects Delivered', value: 'X+' },  // TODO: Replace X
-              { icon: Users, label: 'Clients Served', value: 'X+' },           // TODO: Replace X
-              { icon: Clock, label: 'Years Experience', value: 'X+' },         // TODO: Replace X
-              { icon: Brain, label: 'YOUR_METRIC_LABEL', value: 'X' },         // TODO: e.g. 'Systems Built', replace X
+              { icon: TrendingUp, label: 'Projects Delivered', value: services.stats[0]?.label ?? 'X+' },
+              { icon: Users, label: 'Clients Served', value: services.stats[1]?.label ?? 'X+' },
+              { icon: Clock, label: 'Years Experience', value: services.stats[2]?.label ?? 'X+' },
+              { icon: Brain, label: 'Systems Built', value: 'X' },
             ].map((stat, idx) => {
-              const Icon = stat.icon;
+              const StatIcon = stat.icon;
               return (
                 <div key={idx} className="text-center space-y-3">
-                  <Icon className="w-8 h-8 text-blue-400 mx-auto" />
+                  <StatIcon className="w-8 h-8 text-blue-400 mx-auto" />
                   <div className="text-4xl font-bold">{stat.value}</div>
                   <div className="text-slate-300 text-sm">{stat.label}</div>
                 </div>
@@ -191,12 +150,12 @@ export default function ProjectsPage() {
                 description: 'End-to-end development from backend APIs to frontend interfaces, optimized for performance.',
               },
             ].map((service, idx) => {
-              const Icon = service.icon;
+              const ServiceIcon = service.icon;
               return (
                 <div key={idx} className="rounded-xl border border-slate-200 dark:border-slate-800 p-8 hover:border-blue-300 dark:hover:border-blue-700 transition-colors bg-white dark:bg-slate-900/50 backdrop-blur-sm space-y-4">
                   <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 p-0.5">
                     <div className="w-full h-full bg-white dark:bg-slate-900 rounded-md flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      <ServiceIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white">{service.title}</h3>
